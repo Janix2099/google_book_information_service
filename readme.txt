@@ -2,6 +2,7 @@
 
 This microservice allows you to query the Google Books API programmatically via ZeroMQ. It acts as an intermediary, handling requests and formatting responses for your application.
 Make sure to connect the server to whatever you prefer, right now we are just using localhost @ 5555.
+Can change how much is pulled via editing the "maxResults" param.
 
 ## How It Works
 - The **Client** sends a request to the microservice via a ZeroMQ `REQ` socket.
@@ -15,7 +16,58 @@ Make sure to connect the server to whatever you prefer, right now we are just us
    pip install pyzmq requests
    ```
 
-2. Ensure the Google Books API is enabled and the API key is configured in the server script (`book_info_service.py`).
+2. Ensure the Google Books API is enabled and the API key is configured in the server script (`google_books_service.py`).
+
+---
+
+## Communication Contract
+
+### Request
+- The client sends a JSON object with the following structure:
+  ```json
+  {
+      "query": "search term here",
+      "search_type": "intitle" // or "inauthor" or "isbn"
+  }
+  ```
+- **Fields**:
+  - `query` (string): The search term (e.g., title, author name, or ISBN).
+  - `search_type` (string): The type of search to perform. Allowed values:
+    - `intitle`: Search by book title.
+    - `inauthor`: Search by author name.
+    - `isbn`: Search by ISBN.
+
+### Response
+- The server sends back a JSON object. Possible responses include:
+
+  **Success**:
+  ```json
+  [
+      {
+          "title": "Book Title",
+          "authors": ["Author Name"],
+          "publisher": "Publisher Name",
+          "publishedDate": "2024-01-01",
+          "description": "Book description...",
+          "pageCount": 300,
+          "categories": ["Fiction"],
+          "averageRating": 4.5,
+          "thumbnail": "http://example.com/thumbnail.jpg"
+      }
+  ]
+  ```
+
+  **Failure**:
+  ```json
+  {
+      "error": "API request failed with status code 403"
+  }
+  ```
+
+### Protocol
+- **Socket**: ZeroMQ
+- **Endpoint**: `tcp://localhost:5555`
+- **Message Format**: JSON
 
 ---
 
@@ -23,13 +75,7 @@ Make sure to connect the server to whatever you prefer, right now we are just us
 To request data from the microservice:
 
 1. Connect to the server via ZeroMQ at `tcp://localhost:5555`.
-2. Send a JSON object with the following structure:
-   ```json
-   {
-       "query": "search term here",
-       "search_type": "intitle" // or "inauthor" or "isbn"
-   }
-   ```
+2. Send a JSON object with the structure described in the Communication Contract.
 
 ### Example Request (Python)
 Here’s how to send a request programmatically:
@@ -59,30 +105,7 @@ print("Response:", response)
 ---
 
 ## Receiving Data
-The microservice will return a JSON response containing the requested book data. The response structure is as follows:
-- For successful requests, you will receive a list of book objects:
-  ```json
-  [
-      {
-          "title": "Book Title",
-          "authors": ["Author Name"],
-          "publisher": "Publisher Name",
-          "publishedDate": "2024-01-01",
-          "description": "Book description...",
-          "pageCount": 300,
-          "categories": ["Fiction"],
-          "averageRating": 4.5,
-          "thumbnail": "http://example.com/thumbnail.jpg"
-      },
-      ...
-  ]
-  ```
-- For failed requests, you will receive an error object:
-  ```json
-  {
-      "error": "API request failed with status code 403"
-  }
-  ```
+The microservice will return a JSON response containing the requested book data. Refer to the Communication Contract for details on the response structure.
 
 ### Example Response Handling (Python)
 Here’s how to receive and process the response programmatically:
@@ -108,7 +131,7 @@ else:
 ## Server Setup
 1. Run the server script:
    ```bash
-   python book_info_service.py
+   python google_books_service.py
    ```
 
 2. The server will start listening on `tcp://*:5555`.
@@ -119,3 +142,5 @@ else:
 Use the provided example client (`client.py`) or implement your own using the above instructions.
 
 ---
+
+Feel free to extend this README for additional features or specific usage scenarios!
