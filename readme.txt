@@ -139,8 +139,9 @@ else:
 ---
 
 ## Client Setup
-Use the provided example client (`client.py`) or implement your own using the above instructions.
+Implement your own using the above instructions. Example provided.
 
 ---
 
-Feel free to extend this README for additional features or specific usage scenarios!
+UML Sequence Diagram:
+https://sequencediagram.org/index.html#initialData=C4S2BsFMAIHEHt4HMrQEKINbQJIDsAzeAJwFsBDUePaAZUmIDcQBjSAKHYAdzjQWQPPMGgBhcCEjDuvfoPLDoALQbwAsgEU6DRgxl9W8xQmSoM8bAEEACjk7jJwgLQA+FcXVb6TPewdTgJ1d3T20fYgAuel4WAAtoACVIAEcAV0gAZ2B2EM0w3WJXExQYcytbHNU87wKgl2KzLGgbHAiACQAVDutElPSsvwkAgB4g3K8dBijIGPikjNTwbLx4YBh4AuUqifCAGgbSppbKj2rJwpcACgBmAEoD9COK8fyGUacHsubbCJbejK41AykCAA
