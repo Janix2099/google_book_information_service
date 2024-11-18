@@ -9,7 +9,7 @@ def search_google_books(query, api_key, search_type="intitle"):
     params = {
         "q": f"{search_type}:{query}",
         "key": api_key,
-        "maxResults": 10
+        "maxResults": 10 #for brevity (EDIT AS NEEDED)
     }
 
     response = requests.get(base_url, params=params)
@@ -38,7 +38,7 @@ def main():
     API_KEY = "AIzaSyAaxg8TK6jN8tNM4D2ZcY_g5cziQ6m3OG4"
     context = zmq.Context()
     socket = context.socket(zmq.REP)
-    socket.bind("tcp://*:5555")  # Bind the server to port 5555
+    socket.bind("tcp://*:5555")  # Bind the server to port 5555 or any server of your choice
 
     print("Google Books microservice is running...")
 
